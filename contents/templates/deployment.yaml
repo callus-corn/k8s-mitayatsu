@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contents
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contents
+  template:
+    metadata:
+      labels:
+        app: contents
+    spec:
+      containers:
+      - name: mysql
+        image: calluscorn/mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: hogehoge
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-volume
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-volume
+        persistentVolumeClaim:
+          claimName: contents-pv-claim
